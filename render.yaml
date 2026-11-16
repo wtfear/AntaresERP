@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: antares-erp
+    env: docker
+    dockerfilePath: docker/production/Dockerfile
+    dockerContext: docker/production
+    plan: standard
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      - key: APP_NAME
+        value: AntaresERP
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        generateValue: true
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: 127.0.0.1
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        value: aureus
+      - key: DB_USERNAME
+        value: aureus
+      - key: DB_PASSWORD
+        generateValue: true

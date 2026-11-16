@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        @if ($isPdf ?? false)
+            body {
+                margin: 0;
+            }
+        @endif
+
+        .quotation-document,
+        .quotation-document table,
+        .quotation-document th,
+        .quotation-document td,
+        .quotation-document div,
+        .quotation-document span,
+        .quotation-document p,
+        .quotation-document b,
+        .quotation-document strong {
+            font-family: 'DejaVu Sans', 'Helvetica', 'Arial', sans-serif !important;
+        }
+
+        .quotation-document {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .agreement {
+            margin-bottom: 50px;
+            page-break-after: always;
+        }
+
+        .agreement:last-child {
+            page-break-after: auto;
+        }
+
+        .header {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .company-info {
+            width: 50%;
+            float: {{ $isRtl ? 'right' : 'left' }};
+        }
+
+        .company-name {
+            font-size: 22px;
+            color: #1a4587;
+            margin-bottom: 6px;
+        }
+
+        .vendor-info {
+            width: 45%;
+            float: {{ $isRtl ? 'left' : 'right' }};
+            text-align: {{ $isRtl ? 'left' : 'right' }};
+            border-{{ $isRtl ? 'right' : 'left' }}: 2px solid #f0f0f0;
+            padding-{{ $isRtl ? 'right' : 'left' }}: 20px;
+        }
+
+        .customer-name {
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        .agreement-title {
+            font-size: 22px;
+            color: #1a4587;
+            margin: 15px 0;
+            padding: 8px 0;
+            border-bottom: 2px solid #1a4587;
+        }
+
+        .details-table {
+            width: 100%;
+            margin: 10px 0;
+            border-collapse: collapse;
+        }
+
+        .details-table td {
+            padding: 6px 8px;
+            vertical-align: top;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .items-table th {
+            background: #1a4587;
+            color: #ffffff;
+            padding: 8px 10px;
+            text-align: {{ $isRtl ? 'right' : 'left' }};
+        }
+
+        .items-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .items-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .items-table tr:nth-child(odd) {
+            background: #ffffff;
+        }
+
+        .items-table .numeric,
+        .summary .amount {
+            text-align: {{ $isRtl ? 'left' : 'right' }};
+        }
+
+        .options-title {
+            clear: both;
+            font-size: 16px;
+            color: #1a4587;
+            margin-top: 20px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #1a4587;
+        }
+
+        .summary {
+            width: 100%;
+            display: inline-block;
+        }
+
+        .summary table {
+            float: {{ $isRtl ? 'left' : 'right' }};
+            width: 280px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            white-space: nowrap;
+        }
+
+        .summary table td {
+            padding: 5px 10px;
+        }
+
+        .summary .grand-total td {
+            border-top: 1px solid #e9ecef;
+        }
+
+        .terms {
+            clear: both;
+            margin-top: 20px;
+        }
+
+        .terms-body {
+            margin-top: 6px;
+        }
+
+        .payment-info {
+            clear: both;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            color: #1a4587;
+        }
+
+        .payment-info-title {
+            font-weight: {{ $isRtl ? 'bold' : '600' }};
+            margin-bottom: 10px;
+        }
+
+        :is(.dark .fi-modal-window:has(.quotation-document)) {
+            background-color: #ffffff;
+            --tw-ring-color: rgb(3 7 18 / 0.1);
+        }
+
+        :is(.dark .fi-modal-window:has(.quotation-document) .fi-modal-heading) {
+            color: #030712;
+        }
+
+        :is(.dark .fi-modal-window:has(.quotation-document) .fi-modal-header),
+        :is(.dark .fi-modal-window:has(.quotation-document) .fi-modal-footer) {
+            border-color: rgb(3 7 18 / 0.1);
+        }
+
+        :is(.dark .fi-modal-window:has(.quotation-document) .fi-modal-close-btn) {
+            color: #9ca3af;
+        }
+
+        :is(.dark .fi-modal-window:has(.quotation-document) .fi-modal-footer .fi-btn:not(.fi-color)) {
+            background-color: #ffffff;
+            color: #030712;
+            --tw-ring-color: rgb(3 7 18 / 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    @php
+        $enableUom = settings(\Webkul\Product\Settings\ProductSettings::class)->enable_uom;
+
+        $showDiscount = settings(\Webkul\Sale\Settings\PriceSettings::class)->enable_discount
+            && ($record->lines->contains(fn ($line) => (float) $line->discount > 0)
+                || $record->optionalLines->contains(fn ($option) => (float) $option->discount > 0));
+
+        $terms = filled(trim(strip_tags((string) $record->note, '<img>'))) ? $record->note : null;
+    @endphp
+
+    <div class="quotation-document">
+        <div class="agreement">
+            <!-- Header Section -->
+            <div class="header">
+                <!-- Company Address -->
+                <div class="company-info">
+                    <div class="company-name">{{ $record->company->name }}</div>
+
+                    @if ($record->company->street1)
+                        <div>
+                            {{ $record->company->street1 }}
+
+                            @if ($record->company->street2)
+                                ,{{ $record->company->street2 }}
+                            @endif
+                        </div>
+                    @endif
+
+                    @if ($record->company->city)
+                        <div>
+                            {{ $record->company->city }}
+
+                            @if ($record->company->state)
+                                , {{ $record->company->state->name }}
+                            @endif
+
+                            @if ($record->company->zip)
+                                , {{ $record->company->zip }}
+                            @endif
+                        </div>
+                    @endif
+
+                    @if ($record->company->country)
+                        <div>{{ $record->company->country->name }}</div>
+                    @endif
+
+                    @if ($record->company->email)
+                        <div>Email: {{ $record->company->email }}</div>
+                    @endif
+
+                    @if ($record->company->phone)
+                        <div>Phone: {{ $record->company->phone }}</div>
+                    @endif
+                </div>
+
+                <!-- Customer Address -->
+                <div class="vendor-info">
+                    <div class="customer-name">{{ $record->partner->name }}</div>
+
+                    @if ($record->partner->addresses->count())
+                        <div>
+                            @php
+                                $partnerAddress = $record->partner->addresses->first();
+                            @endphp
+
+                            {{ $partnerAddress->street1 }}
+
+                            @if ($partnerAddress->street2)
+                                ,{{ $partnerAddress->street2 }}
+                            @endif
+                        </div>
+
+                        <div>
+                            {{ $partnerAddress->city }},
+
+                            @if ($partnerAddress->state)
+                                {{ $partnerAddress->state->name }},
+                            @endif
+
+                            {{ $partnerAddress->zip }}
+                        </div>
+
+                        @if ($partnerAddress->country)
+                            <div>
+                                {{ $partnerAddress->country->name }}
+                            </div>
+                        @endif
+
+                        @if ($partnerAddress->email)
+                            <div>
+                                Email:
+                                {{ $partnerAddress->email }}
+                            </div>
+                        @endif
+
+                        @if ($partnerAddress->phone)
+                            <div>
+                                Phone:
+                                {{ $partnerAddress->phone }}
+                            </div>
+                        @endif
+                    @endif
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+
+            <!-- Agreement Title -->
+            <div class="agreement-title">
+                @php
+                    $title = $record->state == \Webkul\Sale\Enums\OrderState::SALE ? 'Order' : 'Quotation';
+                @endphp
+
+                {{ __('sales::app.documents.title', ['document' => $title, 'name' => $record->name]) }}
+            </div>
+
+            <!-- Details Table -->
+            <table class="details-table">
+                <tr>
+                    @if ($record->date_order)
+                        <td width="33%">
+                            <strong>{{ __('sales::app.documents.date', ['document' => $title]) }}</strong><br>
+                            {{ $record->date_order }}
+                        </td>
+                    @endif
+
+                    @if ($record->validity_date)
+                        <td width="33%">
+                            <strong>{{ __('sales::app.documents.expiration-date') }}</strong><br>
+                            {{ $record->validity_date }}
+                        </td>
+                    @endif
+                </tr>
+            </table>
+
+            <!-- Items Table -->
+            @if (! $record->lines->isEmpty())
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th>{{ __('sales::app.documents.product') }}</th>
+                            <th>{{ __('sales::app.documents.quantity') }}</th>
+
+                            @if ($enableUom)
+                                <th>{{ __('sales::app.documents.unit') }}</th>
+                            @endif
+
+                            <th>{{ __('sales::app.documents.unit-price') }}</th>
+
+                            @if ($showDiscount)
+                                <th>{{ __('sales::app.documents.discount-percentage') }}</th>
+                            @endif
+
+                            <th>{{ __('sales::app.documents.amount') }}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($record->lines as $item)
+                            <tr>
+                                <td>{{ $item->product->name }}</td>
+                                <td>{{ number_format($item->product_uom_qty) }}</td>
+
+                                @if ($enableUom)
+                                    <td>{{ $item->product->uom->name }}</td>
+                                @endif
+
+                                <td>{{ $record->currency->symbol }} {{ number_format($item->price_unit, 2) }}</td>
+
+                                @if ($showDiscount)
+                                    <td>{{ floatval($item->discount) }}%</td>
+                                @endif
+
+                                <td class="numeric">{{ $record->currency->symbol }} {{ number_format($item->price_subtotal, 2) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+
+            <!-- Optional Products Table -->
+            @if (in_array($record->state, [\Webkul\Sale\Enums\OrderState::DRAFT, \Webkul\Sale\Enums\OrderState::SENT]) && ! $record->optionalLines->isEmpty())
+                <div class="options-title">{{ __('sales::app.documents.options') }}</div>
+
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th>{{ __('sales::app.documents.product') }}</th>
+                            <th>{{ __('sales::app.documents.quantity') }}</th>
+
+                            @if ($enableUom)
+                                <th>{{ __('sales::app.documents.unit') }}</th>
+                            @endif
+
+                            <th>{{ __('sales::app.documents.unit-price') }}</th>
+
+                            @if ($showDiscount)
+                                <th>{{ __('sales::app.documents.discount-percentage') }}</th>
+                            @endif
+
+                            <th>{{ __('sales::app.documents.amount') }}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($record->optionalLines as $option)
+                            @php
+                                $optionAmount = $option->price_unit * $option->quantity * (1 - (($option->discount ?? 0) / 100));
+                            @endphp
+
+                            <tr>
+                                <td>{{ filled($option->name) ? $option->name : $option->product->name }}</td>
+                                <td>{{ number_format($option->quantity) }}</td>
+
+                                @if ($enableUom)
+                                    <td>{{ $option->uom?->name ?? $option->product->uom->name }}</td>
+                                @endif
+
+                                <td>{{ $record->currency->symbol }} {{ number_format($option->price_unit, 2) }}</td>
+
+                                @if ($showDiscount)
+                                    <td>{{ floatval($option->discount) }}%</td>
+                                @endif
+
+                                <td class="numeric">{{ $record->currency->symbol }} {{ number_format($optionAmount, 2) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+
+            <div class="summary">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>{{ __('sales::app.documents.subtotal') }}</td>
+                            <td>-</td>
+                            <td class="amount">{{ $record->currency->symbol }} {{ number_format($record->amount_untaxed, 2) }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ __('sales::app.documents.tax') }}</td>
+                            <td>-</td>
+                            <td class="amount">{{ $record->currency->symbol }} {{ number_format($record->amount_tax, 2) }}</td>
+                        </tr>
+                        <tr class="grand-total">
+                            <td><b>{{ __('sales::app.documents.grand-total') }}</b></td>
+                            <td>-</td>
+                            <td class="amount"><b>{{ $record->currency->symbol }} {{ number_format($record->amount_total, 2) }}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Terms and Conditions Section -->
+            @if ($terms)
+                <div class="terms">
+                    <div class="options-title">{{ __('sales::app.documents.terms-and-conditions') }}</div>
+
+                    <div class="terms-body">{!! str($terms)->sanitizeHtml() !!}</div>
+                </div>
+            @endif
+
+            <!-- Payment Information Section -->
+            @if ($record->name)
+                <div class="payment-info">
+                    <div class="payment-info-title">{{ __('sales::app.documents.payment-information') }}</div>
+                    <div>
+                        {{ __('sales::app.documents.payment-communication') }}: {{ $record->name }}
+                        @if ($record?->partnerBank?->bank?->name || $record?->partnerBank?->account_number)
+                            <br>
+                            <span class="payment-info-details">{{ __('sales::app.documents.account-details') }}</span>
+                            {{ $record?->partnerBank?->bank?->name ?? 'N/A' }}
+                            ({{ $record?->partnerBank?->account_number ?? 'N/A' }})
+                        @endif
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+</body>
+
+</html>
