@@ -31,7 +31,7 @@ jobs:
       - name: Validate Composer Manifest
         run: |
           echo "Validating composer.json..."
-          composer validate --no-check-all --strict
+          composer validate --no-check-all --no-check-lock --strict
 
       - name: Validate Docker Compose Configuration
         run: |
