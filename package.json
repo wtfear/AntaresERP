@@ -2,8 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build && npm run build:theme",
-        "build:theme": "tailwindcss -i resources/css/filament/admin/theme.css -o public/css/filament/admin/theme.css --minify && tailwindcss -i resources/css/filament/customer/theme.css -o public/css/filament/customer/theme.css --minify",
+        "build": "node build.js",
         "dev": "vite"
     },
     "devDependencies": {
