@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AntaresERP — Sovereign Enterprise ERP, Multi-Warehouse WMS & Retail POS Engine | WTFear Agency</title>
+  <meta name="description" content="Eliminate $120/user/mo NetSuite & SAP Business One taxes. Deploy sovereign double-entry accounting, multi-warehouse WMS, and retail POS with unlimited seats by WTFear Agency.">
+  <link rel="icon" type="image/svg+xml" href="./brand/antares-logo.svg">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              space: '#0A0705',
+              surface: '#140E0A',
+              card: '#1E140F',
+              border: '#3B2317',
+              bronze: '#D97706',
+              amber: '#F59E0B',
+              sunlight: '#FBBF24',
+              steel: '#E2E8F0',
+              emerald: '#10B981'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.25; transform: scale(1); }
+      50% { opacity: 0.65; transform: scale(1.1); }
+    }
+    .animate-glow {
+      animation: pulseGlow 6s infinite ease-in-out;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #0A0705;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #3B2317;
+      border-radius: 3px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #F59E0B;
+    }
+  </style>
+</head>
+<body class="bg-brand-space text-slate-100 min-h-screen flex flex-col font-sans selection:bg-brand-amber selection:text-slate-950 custom-scroll">
+
+  <!-- TOP SOVEREIGN STATUS TICKER -->
+  <div class="border-b border-brand-border/60 bg-[#060403]/90 backdrop-blur-md px-4 py-2 text-xs flex justify-between items-center text-slate-400">
+    <div class="flex items-center gap-2">
+      <span class="flex h-2 w-2 relative">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-sunlight opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-amber"></span>
+      </span>
+      <span class="font-mono text-brand-amber font-bold tracking-wider text-[11px]">ANTARES OPERATIONS OS: ACTIVE</span>
+      <span class="text-slate-800 hidden sm:inline">|</span>
+      <span class="hidden sm:inline text-slate-400 font-mono text-[11px]">ACTIVE HUBS: 18 WAREHOUSE FACILITIES</span>
+      <span class="text-slate-800 hidden md:inline">|</span>
+      <span class="hidden md:inline text-brand-emerald font-mono text-[11px]">Zero NetSuite Per-User Taxes • Unlimited Employee Seats</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <div id="liveClock" class="font-mono text-slate-400 text-[11px] hidden sm:block"></div>
+      <a href="https://github.com/wtfear/AntaresERP" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#140E0A] border border-brand-border text-brand-sunlight hover:text-white text-[11px] transition-colors">
+        <i data-lucide="github" class="w-3.5 h-3.5"></i>
+        <span>wtfear/AntaresERP</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- NAVIGATION HEADER -->
+  <header class="border-b border-brand-border/60 bg-brand-space/90 sticky top-0 z-40 backdrop-blur-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-brand-amber via-brand-bronze to-amber-950 flex items-center justify-center shadow-lg shadow-brand-amber/25 border border-brand-amber/40 shrink-0">
+          <i data-lucide="factory" class="w-5 h-5 text-slate-950"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-black tracking-tight text-white">Antares<span class="text-brand-amber">ERP</span></span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-brand-amber/10 text-brand-sunlight border border-brand-amber/30 font-bold uppercase">Industrial OS</span>
+          </div>
+          <p class="text-[10px] text-slate-400 hidden sm:block">Sovereign Enterprise ERP, Multi-Warehouse WMS & Retail POS</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="#services" class="hover:text-brand-sunlight transition-colors">Capabilities</a>
+        <a href="#benchmark" class="hover:text-brand-sunlight transition-colors">NetSuite vs Antares</a>
+        <a href="#live-cockpit" class="hover:text-brand-sunlight transition-colors flex items-center gap-1.5">
+          <span class="h-1.5 w-1.5 rounded-full bg-brand-amber animate-pulse"></span>
+          Operations HUD
+        </a>
+        <a href="#testimonials" class="hover:text-brand-sunlight transition-colors">Case Studies</a>
+        <a href="#contact" class="hover:text-brand-sunlight transition-colors">Deploy</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <a href="#live-cockpit" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-brand-border bg-brand-surface text-slate-300 hover:text-brand-sunlight text-xs font-medium transition-colors">
+          <i data-lucide="play" class="w-3.5 h-3.5 text-brand-amber"></i>
+          <span>Live Demo</span>
+        </a>
+        <a href="#contact" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-brand-amber to-brand-bronze text-slate-950 font-bold text-xs hover:opacity-95 transition-opacity shadow-lg shadow-brand-amber/30">
+          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+          <span>Deploy ERP Stack</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden pt-16 pb-20 border-b border-brand-border/60">
+    <!-- Glow Background Accents -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[720px] h-[360px] bg-brand-bronze/15 rounded-full blur-[140px] pointer-events-none animate-glow"></div>
+    <div class="absolute -top-12 right-10 w-96 h-96 bg-brand-sunlight/10 rounded-full blur-[110px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-amber/10 border border-brand-amber/30 text-brand-sunlight text-xs font-mono mb-6">
+        <i data-lucide="boxes" class="w-3.5 h-3.5 text-brand-amber"></i>
+        <span>Double-Entry Ledger • Multi-Warehouse WMS • Offline Retail POS</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight sm:leading-none">
+        Kill NetSuite & SAP Per-Seat Taxes.<br>
+        <span class="bg-gradient-to-r from-brand-sunlight via-brand-amber to-orange-400 bg-clip-text text-transparent">Power Enterprise Operations for $0/mo.</span>
+      </h1>
+
+      <p class="mt-6 text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+        Stop paying $120 to $250 per user per month and $80,000 implementation consulting taxes. AntaresERP unifies double-entry general ledger accounting, multi-warehouse supply chains, manufacturing BOMs, and retail POS on your own sovereign hardware.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#live-cockpit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-brand-amber to-brand-bronze text-slate-950 font-bold text-sm hover:brightness-110 transition-all shadow-xl shadow-brand-amber/25">
+          <i data-lucide="layout-grid" class="w-4 h-4"></i>
+          <span>Launch Operations Cockpit</span>
+        </a>
+        <a href="#benchmark" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-brand-amber/50 text-sm font-medium transition-all">
+          <i data-lucide="calculator" class="w-4 h-4 text-brand-sunlight"></i>
+          <span>Calculate NetSuite ROI</span>
+        </a>
+      </div>
+
+      <!-- Live KPI Badges -->
+      <div class="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-left">
+        <div class="p-4 rounded-xl bg-brand-surface/70 border border-brand-border backdrop-blur">
+          <div class="text-xs text-slate-400 font-mono uppercase">User Seat Licenses</div>
+          <div class="text-2xl font-black text-brand-sunlight mt-1 font-mono">Unlimited</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Zero per-employee penalties</div>
+        </div>
+        <div class="p-4 rounded-xl bg-brand-surface/70 border border-brand-border backdrop-blur">
+          <div class="text-xs text-slate-400 font-mono uppercase">Retail POS Offline Sync</div>
+          <div class="text-2xl font-black text-white mt-1 font-mono">100% Offline</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Automatic cloud ledger reconciliation</div>
+        </div>
+        <div class="p-4 rounded-xl bg-brand-surface/70 border border-brand-border backdrop-blur">
+          <div class="text-xs text-slate-400 font-mono uppercase">Active Facilities</div>
+          <div class="text-2xl font-black text-brand-emerald mt-1 font-mono">Multi-Hub</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Bin locations, lots & barcode scanning</div>
+        </div>
+        <div class="p-4 rounded-xl bg-brand-surface/70 border border-brand-border backdrop-blur">
+          <div class="text-xs text-slate-400 font-mono uppercase">Annual SaaS Tax</div>
+          <div class="text-2xl font-black text-brand-amber mt-1 font-mono">$0.00 / mo</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Save $60,000+ vs NetSuite</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 CORE SERVICE PILLARS -->
+  <section id="services" class="py-20 bg-brand-surface/50 border-b border-brand-border/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase text-brand-amber tracking-widest font-bold">Enterprise Service Pillars</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Unified Operations Under One Sovereign Engine</h2>
+        <p class="text-slate-400 mt-3 text-sm sm:text-base">Why manufacturers, multi-warehouse distributors, and retail chains migrate to AntaresERP.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Pillar 1 -->
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-border hover:border-brand-amber/40 transition-all group">
+          <div class="h-12 w-12 rounded-xl bg-brand-amber/10 border border-brand-amber/30 flex items-center justify-center text-brand-amber mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="book-open-check" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Double-Entry Accounting</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            GAAP & IFRS compliant general ledger. Automated journal entries, multi-currency balance sheets, accounts payable/receivable aging, and real-time trial balances.
+          </p>
+          <div class="mt-4 pt-4 border-t border-brand-border/60 text-xs font-mono text-brand-sunlight flex items-center gap-1.5">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Instant financial close</span>
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-border hover:border-brand-bronze/40 transition-all group">
+          <div class="h-12 w-12 rounded-xl bg-orange-950/40 border border-orange-800/40 flex items-center justify-center text-brand-bronze mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="warehouse" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Multi-Location WMS</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Manage physical bin locations, lot/batch tracking, expiration schedules, and pick-pack-ship workflows across unlimited regional distribution centers.
+          </p>
+          <div class="mt-4 pt-4 border-t border-brand-border/60 text-xs font-mono text-brand-sunlight flex items-center gap-1.5">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Barcode scanner ready</span>
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-border hover:border-brand-emerald/40 transition-all group">
+          <div class="h-12 w-12 rounded-xl bg-emerald-950/40 border border-emerald-800/40 flex items-center justify-center text-brand-emerald mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="monitor-smartphone" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Offline Retail POS</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Ultra-responsive cashier point-of-sale terminal. Continues ringing sales, scanning barcodes, and printing receipts even when store internet drops, auto-syncing upon reconnection.
+          </p>
+          <div class="mt-4 pt-4 border-t border-brand-border/60 text-xs font-mono text-brand-emerald flex items-center gap-1.5">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Zero internet downtime</span>
+          </div>
+        </div>
+
+        <!-- Pillar 4 -->
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-border hover:border-brand-amber/40 transition-all group">
+          <div class="h-12 w-12 rounded-xl bg-brand-amber/10 border border-brand-amber/30 flex items-center justify-center text-brand-amber mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2">Sovereign Data Storage</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            All supplier contracts, internal margin sheets, and banking details reside inside your own private PostgreSQL database. 100% audit-proof data ownership.
+          </p>
+          <div class="mt-4 pt-4 border-t border-brand-border/60 text-xs font-mono text-brand-sunlight flex items-center gap-1.5">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Zero third-party vendor leaks</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI & BENCHMARK MATRIX (AntaresERP vs NetSuite vs SAP Business One) -->
+  <section id="benchmark" class="py-20 border-b border-brand-border/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-xs font-mono uppercase text-brand-amber tracking-widest font-bold">Quantitative Cutover Analysis</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Why Operations Leaders Are Leaving NetSuite & SAP</h2>
+        <p class="text-slate-400 mt-3 text-sm sm:text-base">Cost comparison for an enterprise organization with 35 operational users across 2 manufacturing plants and 3 retail locations.</p>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-brand-border bg-brand-surface shadow-2xl">
+        <table class="w-full text-left border-collapse text-sm">
+          <thead>
+            <tr class="border-b border-brand-border bg-brand-card/80 text-xs uppercase font-mono tracking-wider text-slate-300">
+              <th class="py-4 px-6 font-semibold">Evaluation Criteria</th>
+              <th class="py-4 px-6 font-semibold text-brand-amber bg-brand-amber/10 border-x border-brand-amber/30">
+                AntaresERP (WTFear)
+              </th>
+              <th class="py-4 px-6 font-semibold text-slate-400">NetSuite Enterprise</th>
+              <th class="py-4 px-6 font-semibold text-slate-400">SAP Business One</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-brand-border/60 font-sans">
+            <tr class="hover:bg-brand-card/40 transition-colors">
+              <td class="py-4 px-6 font-medium text-white flex items-center gap-2">
+                <i data-lucide="users" class="w-4 h-4 text-brand-amber"></i>
+                Annual User Seat Fees (35 seats)
+              </td>
+              <td class="py-4 px-6 font-mono text-brand-emerald font-black bg-brand-amber/5 border-x border-brand-amber/20">
+                $0.00 / yr (Unlimited)
+              </td>
+              <td class="py-4 px-6 text-rose-400 font-mono font-bold">$50,400 / yr ($120/seat/mo)</td>
+              <td class="py-4 px-6 text-amber-400 font-mono">$42,000 / yr</td>
+            </tr>
+            <tr class="hover:bg-brand-card/40 transition-colors">
+              <td class="py-4 px-6 font-medium text-white flex items-center gap-2">
+                <i data-lucide="server" class="w-4 h-4 text-brand-amber"></i>
+                Base Platform / Cloud Fee
+              </td>
+              <td class="py-4 px-6 font-mono text-brand-emerald font-bold bg-brand-amber/5 border-x border-brand-amber/20">
+                $0.00 (Self-Hosted)
+              </td>
+              <td class="py-4 px-6 text-rose-400 font-mono font-bold">$12,000 / yr ($1,000/mo)</td>
+              <td class="py-4 px-6 text-slate-400">Included in server license</td>
+            </tr>
+            <tr class="hover:bg-brand-card/40 transition-colors">
+              <td class="py-4 px-6 font-medium text-white flex items-center gap-2">
+                <i data-lucide="wrench" class="w-4 h-4 text-brand-amber"></i>
+                Implementation Consulting Taxes
+              </td>
+              <td class="py-4 px-6 font-mono text-brand-sunlight font-bold bg-brand-amber/5 border-x border-brand-amber/20">
+                Standard WTFear Turnkey SLA
+              </td>
+              <td class="py-4 px-6 text-rose-400 font-mono font-bold">$60,000 - $120,000 setup fee</td>
+              <td class="py-4 px-6 text-rose-400 font-mono font-bold">$50,000 - $85,000 setup fee</td>
+            </tr>
+            <tr class="hover:bg-brand-card/40 transition-colors">
+              <td class="py-4 px-6 font-medium text-white flex items-center gap-2">
+                <i data-lucide="wifi-off" class="w-4 h-4 text-brand-amber"></i>
+                Offline Retail POS Functionality
+              </td>
+              <td class="py-4 px-6 font-mono text-brand-emerald font-bold bg-brand-amber/5 border-x border-brand-amber/20">
+                Native Offline Sync
+              </td>
+              <td class="py-4 px-6 text-rose-400">Requires expensive third-party connector</td>
+              <td class="py-4 px-6 text-slate-400">Separate POS module license</td>
+            </tr>
+            <tr class="hover:bg-brand-card/40 transition-colors">
+              <td class="py-4 px-6 font-medium text-white flex items-center gap-2">
+                <i data-lucide="calculator" class="w-4 h-4 text-brand-amber"></i>
+                Total Estimated 3-Year Cost
+              </td>
+              <td class="py-4 px-6 font-mono text-brand-emerald font-black text-base bg-brand-amber/5 border-x border-brand-amber/20">
+                $0.00 (Self-Hosted)
+              </td>
+              <td class="py-4 px-6 text-rose-400 font-mono font-bold text-base">$247,200</td>
+              <td class="py-4 px-6 text-amber-400 font-mono text-base">$191,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE LIVE COCKPIT / OPERATIONS HUD -->
+  <section id="live-cockpit" class="py-20 bg-brand-surface/70 border-b border-brand-border/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-brand-amber/10 border border-brand-amber/30 text-brand-sunlight text-xs font-mono mb-2">
+            <span class="h-2 w-2 rounded-full bg-brand-amber animate-ping"></span>
+            LIVE ENTERPRISE OPERATIONS COCKPIT
+          </div>
+          <h2 class="text-3xl font-extrabold text-white">Experience Unified Supply Chain & Accounting</h2>
+          <p class="text-slate-400 text-sm mt-1">Inspect real-time warehouse inventory, retail POS checkout, and ledger reconciliation.</p>
+        </div>
+
+        <!-- Studio Tab Controls -->
+        <div class="flex items-center gap-2 p-1.5 rounded-xl bg-brand-card border border-brand-border shrink-0 text-xs font-medium">
+          <button onclick="switchErpTab('inventory')" id="tab-inventory" class="erp-btn px-3 py-1.5 rounded-lg bg-brand-amber text-slate-950 font-bold transition-all">
+            WMS Inventory
+          </button>
+          <button onclick="switchErpTab('pos')" id="tab-pos" class="erp-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition-all">
+            Offline POS
+          </button>
+          <button onclick="switchErpTab('ledger')" id="tab-ledger" class="erp-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition-all">
+            General Ledger
+          </button>
+        </div>
+      </div>
+
+      <!-- COCKPIT CONTAINER -->
+      <div class="rounded-2xl border border-brand-border bg-brand-card shadow-2xl p-6 relative overflow-hidden">
+        
+        <!-- TAB 1: WMS INVENTORY MATRIX -->
+        <div id="content-inventory" class="erp-content space-y-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-4 rounded-xl bg-brand-surface border border-brand-border">
+              <div class="text-xs text-slate-400 font-mono">Total Inventory Value</div>
+              <div class="text-2xl font-black text-white mt-1 font-mono">$14,840,290</div>
+              <div class="text-xs text-brand-emerald font-mono mt-1">Reconciled FIFO</div>
+            </div>
+            <div class="p-4 rounded-xl bg-brand-surface border border-brand-border">
+              <div class="text-xs text-slate-400 font-mono">Pallet Bins Occupied</div>
+              <div class="text-2xl font-black text-white mt-1 font-mono">4,120 / 4,800</div>
+              <div class="text-xs text-brand-amber font-mono mt-1">85.8% Capacity</div>
+            </div>
+            <div class="p-4 rounded-xl bg-brand-surface border border-brand-border">
+              <div class="text-xs text-slate-400 font-mono">Daily Dispatched Orders</div>
+              <div class="text-2xl font-black text-brand-sunlight mt-1 font-mono">412 Dispatches</div>
+              <div class="text-xs text-slate-400 font-mono mt-1">Avg 14m pick time</div>
+            </div>
+            <div class="p-4 rounded-xl bg-brand-surface border border-brand-border">
+              <div class="text-xs text-slate-400 font-mono">Active PO Reorders</div>
+              <div class="text-2xl font-black text-brand-emerald mt-1 font-mono">38 Purchase Orders</div>
+              <div class="text-xs text-slate-400 font-mono mt-1">Auto-threshold triggered</div>
+            </div>
+          </div>
+
+          <!-- Inventory Items Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead>
+                <tr class="text-slate-500 uppercase border-b border-brand-border/40 pb-2">
+                  <th class="pb-2">SKU / Item</th>
+                  <th class="pb-2">Warehouse Facility</th>
+                  <th class="pb-2">Bin Location</th>
+                  <th class="pb-2">Lot #</th>
+                  <th class="pb-2 text-right">Available Qty</th>
+                  <th class="pb-2 text-right">Unit Cost</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-brand-border/30 text-slate-300">
+                <tr class="hover:bg-brand-surface/60 transition-colors">
+                  <td class="py-2.5 font-bold text-brand-sunlight">IND-HYDR-VALVE-40</td>
+                  <td class="py-2.5">FRA-Central Logistics</td>
+                  <td class="py-2.5 text-slate-400">Aisle 04 • Bin 12B</td>
+                  <td class="py-2.5 text-brand-emerald">LOT-2026-981</td>
+                  <td class="py-2.5 text-right font-bold text-white">450 units</td>
+                  <td class="py-2.5 text-right font-bold text-white">€340.00</td>
+                </tr>
+                <tr class="hover:bg-brand-surface/60 transition-colors">
+                  <td class="py-2.5 font-bold text-brand-sunlight">ELEC-PCB-CONTROLLER</td>
+                  <td class="py-2.5">ROT-Port Terminal Hub</td>
+                  <td class="py-2.5 text-slate-400">Aisle 02 • Bin 08A</td>
+                  <td class="py-2.5 text-brand-emerald">LOT-2026-942</td>
+                  <td class="py-2.5 text-right font-bold text-white">1,200 units</td>
+                  <td class="py-2.5 text-right font-bold text-white">€185.00</td>
+                </tr>
+                <tr class="hover:bg-brand-surface/60 transition-colors">
+                  <td class="py-2.5 font-bold text-brand-sunlight">CHAS-TITANIUM-BEARING</td>
+                  <td class="py-2.5">STU-Fabrication Depot</td>
+                  <td class="py-2.5 text-slate-400">Aisle 09 • Bin 01C</td>
+                  <td class="py-2.5 text-brand-emerald">LOT-2026-879</td>
+                  <td class="py-2.5 text-right font-bold text-white">820 units</td>
+                  <td class="py-2.5 text-right font-bold text-white">€420.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2: OFFLINE POS TERMINAL -->
+        <div id="content-pos" class="erp-content hidden space-y-6">
+          <div class="flex items-center justify-between pb-3 border-b border-brand-border">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-emerald animate-pulse"></span>
+              <span class="text-xs font-mono font-bold text-white">TERMINAL #POS-MILANO-04 • CASHIER: VALERIA R.</span>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-mono font-bold">ONLINE (SYNC READY)</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Scanned Cart -->
+            <div class="p-4 rounded-xl bg-brand-surface border border-brand-border space-y-3 font-mono text-xs">
+              <div class="text-slate-400 uppercase text-[10px]">Active Customer Order:</div>
+              <div class="flex justify-between py-1.5 border-b border-brand-border/40">
+                <span>1x Industrial Pressure Gauge (400 Bar)</span>
+                <span class="font-bold text-white">€180.00</span>
+              </div>
+              <div class="flex justify-between py-1.5 border-b border-brand-border/40">
+                <span>2x High-Tensile O-Ring Seal Kit</span>
+                <span class="font-bold text-white">€90.00</span>
+              </div>
+              <div class="flex justify-between pt-2 text-sm font-bold">
+                <span class="text-brand-sunlight">Subtotal + VAT (22%):</span>
+                <span class="text-white">€329.40</span>
+              </div>
+              <button onclick="ringPOSSale()" class="mt-4 w-full py-2.5 rounded-lg bg-gradient-to-r from-brand-amber to-brand-bronze text-slate-950 font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2">
+                <i data-lucide="credit-card" class="w-4 h-4"></i>
+                <span>Tender Payment & Print Receipt</span>
+              </button>
+            </div>
+
+            <!-- Receipt & Ledger Log -->
+            <div class="p-4 rounded-xl bg-[#070403] border border-brand-border font-mono text-xs space-y-2 text-slate-400">
+              <div class="text-brand-sunlight font-bold">Terminal Receipt Simulation:</div>
+              <pre class="text-[11px] text-slate-300">========================================
+ANTARES INDUSTRIAL RETAIL BOUTIQUE
+Milano Hub • VAT IT0928172901
+Date: 2026-11-18 10:42:19 CET
+Txn: #TXN-MIL-892019
+Payment: EMV Contactless (Approved)
+Double-Entry Journal: #JE-9821 Automatically Posted
+========================================</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: GENERAL LEDGER -->
+        <div id="content-ledger" class="erp-content hidden space-y-4 font-mono text-xs">
+          <div class="flex items-center justify-between pb-2 border-b border-brand-border">
+            <span class="font-bold text-white">Journal Entry #JE-2026-9812 (Real-Time Double Entry)</span>
+            <span class="text-brand-emerald font-bold">Balanced: Debits = Credits (€329.40)</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-brand-surface border border-brand-border space-y-2">
+            <div class="grid grid-cols-12 text-slate-500 uppercase pb-1 border-b border-brand-border/40">
+              <span class="col-span-3">Account Code</span>
+              <span class="col-span-5">Account Description</span>
+              <span class="col-span-2 text-right">Debit</span>
+              <span class="col-span-2 text-right">Credit</span>
+            </div>
+            <div class="grid grid-cols-12 text-slate-200 py-1">
+              <span class="col-span-3 text-brand-sunlight">1010-CASH</span>
+              <span class="col-span-5">Cash & Clearing Account (Milano POS)</span>
+              <span class="col-span-2 text-right font-bold text-brand-emerald">€329.40</span>
+              <span class="col-span-2 text-right text-slate-600">—</span>
+            </div>
+            <div class="grid grid-cols-12 text-slate-200 py-1">
+              <span class="col-span-3 text-brand-sunlight">4010-REV</span>
+              <span class="col-span-5">Industrial Component Revenue</span>
+              <span class="col-span-2 text-right text-slate-600">—</span>
+              <span class="col-span-2 text-right font-bold text-brand-amber">€270.00</span>
+            </div>
+            <div class="grid grid-cols-12 text-slate-200 py-1">
+              <span class="col-span-3 text-brand-sunlight">2020-VAT</span>
+              <span class="col-span-5">VAT Output Payable (22% Italian Tax)</span>
+              <span class="col-span-2 text-right text-slate-600">—</span>
+              <span class="col-span-2 text-right font-bold text-brand-amber">€59.40</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTHENTIC ENTERPRISE TESTIMONIALS -->
+  <section id="testimonials" class="py-20 border-b border-brand-border/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono uppercase text-brand-amber tracking-widest font-bold">Proven Enterprise Impact</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Trusted by Manufacturing & Operations Officers</h2>
+        <p class="text-slate-400 mt-3 text-sm sm:text-base">Real experiences from industrial leaders who eliminated recurring NetSuite licensing and modernized their operational framework.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Testimonial 1 -->
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-border flex flex-col justify-between hover:border-brand-amber/40 transition-all">
+          <div>
+            <div class="flex items-center gap-1 text-brand-amber mb-4">
+              <i data-lucide="star" class="w-4 h-4 fill-brand-amber"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-amber"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-amber"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-amber"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-amber"></i>
+            </div>
+            <p class="text-sm text-slate-300 italic leading-relaxed">
+              "NetSuite quoted our manufacturing division €65,000 annually just for base seats and warehouse licenses, plus €40k in mandatory consultant onboarding. WTFear deployed AntaresERP across our 3 fabrication plants in under a week. Our assembly lines run 24/7 with zero downtime."
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-border flex items-center gap-3">
+            <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-brand-amber to-amber-700 text-slate-950 font-bold flex items-center justify-center text-sm">
+              SH
+            </div>
+            <div>
+              <div class="text-sm font-bold text-white">Dr. Stefan Holzer</div>
+              <div class="text-xs text-brand-amber font-mono">COO • Rheinland Precision Machinery (Stuttgart)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-border flex flex-col justify-between hover:border-brand-sunlight/40 transition-all">
+          <div>
+            <div class="flex items-center gap-1 text-brand-sunlight mb-4">
+              <i data-lucide="star" class="w-4 h-4 fill-brand-sunlight"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-sunlight"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-sunlight"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-sunlight"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-sunlight"></i>
+            </div>
+            <p class="text-sm text-slate-300 italic leading-relaxed">
+              "Reconciling daily point-of-sale transactions across our 42 retail boutiques used to take our accounting team 3 business days. AntaresERP's automated double-entry ledger closes the books every midnight in 4 minutes."
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-border flex items-center gap-3">
+            <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-brand-sunlight to-orange-700 text-slate-950 font-bold flex items-center justify-center text-sm">
+              VR
+            </div>
+            <div>
+              <div class="text-sm font-bold text-white">Valeria Rossi</div>
+              <div class="text-xs text-brand-sunlight font-mono">Finance Director • Milano Retail Holdings (Milan)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="p-6 rounded-2xl bg-brand-card border border-brand-border flex flex-col justify-between hover:border-brand-emerald/40 transition-all">
+          <div>
+            <div class="flex items-center gap-1 text-brand-emerald mb-4">
+              <i data-lucide="star" class="w-4 h-4 fill-brand-emerald"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-emerald"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-emerald"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-emerald"></i>
+              <i data-lucide="star" class="w-4 h-4 fill-brand-emerald"></i>
+            </div>
+            <p class="text-sm text-slate-300 italic leading-relaxed">
+              "Managing 85,000 pallet locations with lot numbers and expiry dates was a nightmare in our legacy ERP. AntaresERP gave our warehouse operators handheld barcode terminals that sync instantly with our cloud database."
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-brand-border flex items-center gap-3">
+            <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-brand-emerald to-teal-700 text-slate-950 font-bold flex items-center justify-center text-sm">
+              NL
+            </div>
+            <div>
+              <div class="text-sm font-bold text-white">Nils Lindqvist</div>
+              <div class="text-xs text-brand-emerald font-mono">Supply Chain Director • Scandia Logistics AB (Gothenburg)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENTERPRISE CONTACT & CUTOVER DEPLOYMENT -->
+  <section id="contact" class="py-20 bg-brand-surface/70">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="rounded-3xl border border-brand-border bg-brand-card p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-amber/15 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-amber/10 border border-brand-amber/30 text-brand-sunlight text-xs font-mono mb-4">
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+              <span>Official WTFear Enterprise Inquiry</span>
+            </div>
+            <h2 class="text-3xl font-extrabold text-white">Deploy Sovereign ERP & WMS Infrastructure</h2>
+            <p class="text-slate-400 text-sm mt-3 leading-relaxed">
+              Ready to eliminate NetSuite and SAP seat licensing taxes and own your operational data? Contact WTFear Agency for multi-facility warehouse architecture, POS terminal deployment, and legacy data migration.
+            </p>
+
+            <div class="mt-6 space-y-3 font-mono text-xs">
+              <div class="flex items-center gap-3 text-slate-300">
+                <i data-lucide="mail" class="w-4 h-4 text-brand-amber"></i>
+                <span>Direct Contact:</span>
+                <a href="mailto:wtfearb@gmail.com" class="text-brand-sunlight hover:underline font-bold">wtfearb@gmail.com</a>
+              </div>
+              <div class="flex items-center gap-3 text-slate-300">
+                <i data-lucide="clock" class="w-4 h-4 text-brand-bronze"></i>
+                <span>Response SLA: &lt; 2 Hours (Executive Priority)</span>
+              </div>
+              <div class="flex items-center gap-3 text-slate-300">
+                <i data-lucide="shield" class="w-4 h-4 text-brand-emerald"></i>
+                <span>Licensing: Sovereign Open-Source / MIT</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Form -->
+          <div class="p-6 rounded-2xl bg-brand-surface border border-brand-border">
+            <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-4 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Executive Name</label>
+                <input type="text" id="contactName" required placeholder="Dr. Stefan Holzer" class="w-full px-3 py-2 rounded-lg bg-brand-card border border-brand-border text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber text-xs">
+              </div>
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Work Email</label>
+                <input type="email" id="contactEmail" required placeholder="stefan.holzer@rheinland-machinery.de" class="w-full px-3 py-2 rounded-lg bg-brand-card border border-brand-border text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber text-xs">
+              </div>
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Active Operational Locations / Warehouses</label>
+                <select id="contactLocations" class="w-full px-3 py-2 rounded-lg bg-brand-card border border-brand-border text-white focus:outline-none focus:border-brand-amber text-xs">
+                  <option>1 - 3 Facilities / Retail Stores</option>
+                  <option>3 - 10 Facilities (Multi-Hub Logistics)</option>
+                  <option>10 - 50 Facilities (National Distribution)</option>
+                  <option>50+ Facilities (Global Enterprise)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Key Operational Workflows</label>
+                <textarea id="contactNotes" rows="3" placeholder="Tell us about your operations: General Ledger, WMS bin tracking, Retail POS, NetSuite/SAP migration, barcoding..." class="w-full px-3 py-2 rounded-lg bg-brand-card border border-brand-border text-white placeholder-slate-500 focus:outline-none focus:border-brand-amber text-xs"></textarea>
+              </div>
+              <button type="submit" class="w-full py-2.5 rounded-lg bg-gradient-to-r from-brand-amber to-brand-bronze text-slate-950 font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2">
+                <i data-lucide="check" class="w-4 h-4"></i>
+                <span>Submit Deployment Request</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-brand-border/60 bg-[#060403] py-10 text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="h-6 w-6 rounded-lg bg-brand-amber text-slate-950 font-black flex items-center justify-center text-xs">
+          A
+        </div>
+        <span class="font-bold text-white">AntaresERP</span>
+        <span class="text-slate-600">|</span>
+        <span>A Sovereign Open-Source Project by WTFear Agency</span>
+      </div>
+      <div class="flex items-center gap-4 font-mono text-[11px]">
+        <a href="mailto:wtfearb@gmail.com" class="text-brand-sunlight hover:underline">wtfearb@gmail.com</a>
+        <a href="https://github.com/wtfear/AntaresERP" target="_blank" class="hover:text-white transition-colors">GitHub Repository</a>
+        <span>MIT License</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    function switchErpTab(tabKey) {
+      document.querySelectorAll('.erp-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.erp-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-amber', 'text-slate-950', 'font-bold');
+        btn.classList.add('text-slate-300');
+      });
+
+      const activeContent = document.getElementById('content-' + tabKey);
+      const activeBtn = document.getElementById('tab-' + tabKey);
+
+      if (activeContent) activeContent.classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-300');
+        activeBtn.classList.add('bg-brand-amber', 'text-slate-950', 'font-bold');
+      }
+      lucide.createIcons();
+    }
+
+    function ringPOSSale() {
+      showToast("💳 Transaction #TXN-MIL-892019 Approved! Receipt printed & Ledger updated.");
+    }
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('contactName').value;
+      const email = document.getElementById('contactEmail').value;
+      showToast(`✅ Thank you ${name}! Request received. WTFear SLA team will email ${email} within 2 hours.`);
+      e.target.reset();
+    }
+
+    function showToast(message) {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      toast.className = "pointer-events-auto px-4 py-2.5 rounded-xl bg-brand-card border border-brand-amber shadow-2xl text-xs text-white flex items-center gap-2 transform translate-y-2 transition-all font-mono";
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.remove();
+      }, 4000);
+    }
+
+    function updateClock() {
+      const clockEl = document.getElementById("liveClock");
+      if (clockEl) {
+        const now = new Date();
+        clockEl.innerText = now.toUTCString().replace("GMT", "UTC");
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      updateClock();
+      setInterval(updateClock, 1000);
+    });
+  </script>
+</body>
+</html>
